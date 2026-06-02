@@ -52,9 +52,15 @@
             z-index: 10;
         }
 
-        /* Abstract Tech Background for Slide 1 */
+        /* Abstract Tech Background for Slide 1.
+           A layered radial-gradient sits under the hotlinked image so the slide
+           still looks intentional if the external asset fails to load. */
         .bg-neural-network {
-            background-image: url('https://png.pngtree.com/thumb_back/fw800/background/20251117/pngtree-abstract-network-of-glowing-neural-pathways-against-a-dark-blue-background-image_20333105.webp');
+            background-color: #0b1220;
+            background-image:
+                radial-gradient(circle at 20% 25%, rgba(56, 189, 248, 0.18), transparent 45%),
+                radial-gradient(circle at 80% 75%, rgba(129, 140, 248, 0.18), transparent 45%),
+                url('https://png.pngtree.com/thumb_back/fw800/background/20251117/pngtree-abstract-network-of-glowing-neural-pathways-against-a-dark-blue-background-image_20333105.webp');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -87,6 +93,20 @@
 
         .control-btn:hover {
             background: rgba(255,255,255,0.2);
+        }
+
+        /* Visible keyboard focus rings for accessibility */
+        .control-btn:focus-visible,
+        a:focus-visible {
+            outline: 2px solid #38bdf8;
+            outline-offset: 2px;
+        }
+
+        /* Honour users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .slide {
+                transition: opacity 0.01ms;
+            }
         }
 
         #progress-bar {
@@ -317,8 +337,8 @@
                     <thead>
                         <tr>
                             <th class="w-1/4">Feature</th>
-                            <th class="w-3/8 text-orange-400"><i class="fa-brands fa-git-alt mr-2"></i> Git (The Tool)</th>
-                            <th class="w-3/8 text-white"><i class="fa-brands fa-github mr-2"></i> GitHub (The Service)</th>
+                            <th class="w-[37.5%] text-orange-400"><i class="fa-brands fa-git-alt mr-2" aria-hidden="true"></i> Git (The Tool)</th>
+                            <th class="w-[37.5%] text-white"><i class="fa-brands fa-github mr-2" aria-hidden="true"></i> GitHub (The Service)</th>
                         </tr>
                     </thead>
                     <tbody class="text-slate-300 text-sm">
@@ -832,7 +852,7 @@
                 <div class="bg-slate-800 border-t-4 border-blue-500 rounded-xl p-6 text-center shadow-lg relative">
                     <div class="absolute -top-5 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-lg border-4 border-slate-900">3</div>
                     <h4 class="font-bold text-white mt-4 mb-3 text-lg">Edit</h4>
-                    <p class="text-xs text-slate-400 leading-relaxed">Open the filw, locate the <code class="text-blue-300">EDIT ME </code> line, and append your name to the file list.</p>
+                    <p class="text-xs text-slate-400 leading-relaxed">Open the file, locate the <code class="text-blue-300">EDIT ME</code> line, and append your name to the file list.</p>
                 </div>
 
                 <!-- Step 4 -->
@@ -870,11 +890,11 @@
     </div>
 
     <!-- Global Controls & Progress -->
-    <div id="slide-counter">Slide 1 of 18</div>
+    <div id="slide-counter" role="status" aria-live="polite">Slide 1 of 18</div>
     
     <div id="controls">
-        <button class="control-btn" id="prevBtn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
-        <button class="control-btn" id="nextBtn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="control-btn" id="prevBtn" onclick="prevSlide()" aria-label="Previous slide"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <button class="control-btn" id="nextBtn" onclick="nextSlide()" aria-label="Next slide"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
     </div>
 
     <div id="progress-bar" style="width: 0%;"></div>
@@ -885,19 +905,27 @@
         const progressBar = document.getElementById('progress-bar');
         const slideCounter = document.getElementById('slide-counter');
 
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
         function updateSlides() {
             slides.forEach((slide, index) => {
-                if (index === currentSlide) {
-                    slide.classList.add('active');
-                } else {
-                    slide.classList.remove('active');
-                }
+                const isActive = index === currentSlide;
+                slide.classList.toggle('active', isActive);
+                // Hide off-screen slides from assistive tech and tab order
+                slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
             });
 
             // Update Progress Bar & Counter
             const progress = (currentSlide / (slides.length - 1)) * 100;
             progressBar.style.width = `${progress}%`;
             slideCounter.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+
+            // Reflect navigation limits for keyboard / screen-reader users
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            prevBtn.style.opacity = prevBtn.disabled ? '0.4' : '1';
+            nextBtn.style.opacity = nextBtn.disabled ? '0.4' : '1';
         }
 
         function nextSlide() {
@@ -917,9 +945,19 @@
         // Keyboard Navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault(); // stop Space from scrolling the page
                 nextSlide();
             } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
                 prevSlide();
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                currentSlide = 0;
+                updateSlides();
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                currentSlide = slides.length - 1;
+                updateSlides();
             }
         });
 
