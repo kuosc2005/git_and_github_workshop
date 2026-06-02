@@ -37,6 +37,7 @@ Open your terminal and clone down your unique forked copy to your local machine:
 git clone https://github.com/YOUR-USERNAME/git-and-github-workshop.git
 ```
 
+
 ### Step 3: Modify Code & Add Your Profile Badge 📝
 1. Open the project folder in VS Code:
    ```bash
