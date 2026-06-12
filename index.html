@@ -1,769 +1,1195 @@
-x<!DOCTYPE html>
+x<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>lol github workshop hehe</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        devDark: '#010409',
-                        devCard: '#0d1117',
-                        devBorder: '#30363d',
-                        devText: '#c9d1d9',
-                        devBlue: '#58a6ff',
-                        devGreen: '#238636',
-                        devRed: '#f85149',
-                        devOrange: '#d29922'
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              devDark: "#010409",
+              devCard: "#0d1117",
+              devBorder: "#30363d",
+              devText: "#c9d1d9",
+              devBlue: "#58a6ff",
+              devGreen: "#238636",
+              devRed: "#f85149",
+              devOrange: "#d29922",
+            },
+          },
+        },
+      };
 
-        function copyToClipboard(text, buttonElement) {
-            navigator.clipboard.writeText(text.trim()).then(() => {
-                const icon = buttonElement.querySelector('i');
-                const originalClass = icon.className;
-                icon.className = 'fa-solid fa-check text-emerald-400';
+      function copyToClipboard(text, buttonElement) {
+        navigator.clipboard
+          .writeText(text.trim())
+          .then(() => {
+            const icon = buttonElement.querySelector("i");
+            const originalClass = icon.className;
+            icon.className = "fa-solid fa-check text-emerald-400";
 
-                setTimeout(() => {
-                    icon.className = originalClass;
-                }, 1500);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
-        }
+            setTimeout(() => {
+              icon.className = originalClass;
+            }, 1500);
+          })
+          .catch((err) => {
+            console.error("Failed to copy text: ", err);
+          });
+      }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <style>
-        /* Modern Scrollbar Styling for WebKit Engines (Chrome, Safari, Edge) */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+      /* Modern Scrollbar Styling for WebKit Engines (Chrome, Safari, Edge) */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
 
-        ::-webkit-scrollbar-track {
-            background: #010409;
-        }
+      ::-webkit-scrollbar-track {
+        background: #010409;
+      }
 
-        ::-webkit-scrollbar-thumb {
-            background: #30363d;
-            border-radius: 4px;
-        }
+      ::-webkit-scrollbar-thumb {
+        background: #30363d;
+        border-radius: 4px;
+      }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #58a6ff;
-        }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #58a6ff;
+      }
 
-        /* Firefox Scrollbar Styling */
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: #30363d #010409;
-        }
+      /* Firefox Scrollbar Styling */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: #30363d #010409;
+      }
     </style>
-</head>
+  </head>
 
-<body class="bg-devDark text-devText font-sans antialiased min-h-screen">
-
-    <nav class="border-b border-devBorder bg-devDark/80 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <span
-                    class="bg-devGreen text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider uppercase">KUCC</span>
-                <span class="font-semibold text-lg tracking-tight text-white">Git & GitHub Core Library</span>
-            </div>
-            <div class="flex space-x-4 text-sm font-medium">
-                <a href="#lab-steps" class="text-slate-400 hover:text-white transition">Live Lab</a>
-                <a href="#command-library" class="text-slate-400 hover:text-white transition">Command Library</a>
-                <a href="#sandbox"
-                    class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg transition">Playground</a>
-            </div>
+  <body class="bg-devDark text-devText font-sans antialiased min-h-screen">
+    <nav
+      class="border-b border-devBorder bg-devDark/80 backdrop-blur sticky top-0 z-50"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      >
+        <div class="flex items-center space-x-3">
+          <span
+            class="bg-devGreen text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider uppercase"
+            >KUCC</span
+          >
+          <span class="font-semibold text-lg tracking-tight text-white"
+            >Git & GitHub Core Library</span
+          >
         </div>
+        <div class="flex space-x-4 text-sm font-medium">
+          <a
+            href="#lab-steps"
+            class="text-slate-400 hover:text-white transition"
+            >Live Lab</a
+          >
+          <a
+            href="#command-library"
+            class="text-slate-400 hover:text-white transition"
+            >Command Library</a
+          >
+          <a
+            href="#sandbox"
+            class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg transition"
+            >Playground</a
+          >
+        </div>
+      </div>
     </nav>
 
-    <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10 border-b border-devBorder">
-        <div class="max-w-3xl">
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-none mb-4">
-                The Ultimate Git Resource Hub
-            </h1>
-            <p class="text-lg text-slate-400 leading-relaxed mb-6">
-                Welcome, First Years! Use this page during today's KUCC hands-on workshop to complete your live
-                assignment. Bookmark it to use as a reliable reference library for your upcoming semester projects.
-            </p>
-            <a href="https://github.com/kuosc2005/git_and_github_workshop" target="_blank" rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 bg-devCard hover:bg-slate-800 text-white border border-devBorder px-4 py-2 rounded-lg transition text-sm font-medium shadow-md">
-                <i class="fa-brands fa-github text-lg"></i> Repo
-            </a>
-        </div>
+    <header
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10 border-b border-devBorder"
+    >
+      <div class="max-w-3xl">
+        <h1
+          class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-none mb-4"
+        >
+          The Ultimate Git Resource Hub
+        </h1>
+        <p class="text-lg text-slate-400 leading-relaxed mb-6">
+          Welcome, First Years! Use this page during today's KUCC hands-on
+          workshop to complete your live assignment. Bookmark it to use as a
+          reliable reference library for your upcoming semester projects.
+        </p>
+        <a
+          href="https://github.com/kuosc2005/git_and_github_workshop"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-devCard hover:bg-slate-800 text-white border border-devBorder px-4 py-2 rounded-lg transition text-sm font-medium shadow-md"
+        >
+          <i class="fa-brands fa-github text-lg"></i> Repo
+        </a>
+      </div>
     </header>
 
-    <main id="lab-steps" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <main
+      id="lab-steps"
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 lg:grid-cols-3 gap-8"
+    >
+      <div class="lg:col-span-2 space-y-8">
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-laptop-code text-devBlue"></i> Today's Workshop
+          Mission
+        </h2>
 
-        <div class="lg:col-span-2 space-y-8">
-            <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-laptop-code text-devBlue"></i> Today's Workshop Mission
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div
-                    class="bg-devCard border border-devBorder p-5 rounded-xl space-y-2 hover:border-devBlue/30 transition">
-                    <div class="text-devBlue font-bold text-sm tracking-wide uppercase">Step 1: Fork & Star</div>
-                    <p class="text-sm text-slate-400">Click the <strong>Star</strong> button on our repository to
-                        support us, then click <strong>Fork</strong> to generate a separate copy of this project
-                        directly on your GitHub profile.</p>
-                </div>
-
-                <div
-                    class="bg-devCard border border-devBorder p-5 rounded-xl space-y-2 hover:border-devBlue/30 transition">
-                    <div class="text-devBlue font-bold text-sm tracking-wide uppercase">Step 2: Local Clone</div>
-                    <p class="text-sm text-slate-400">Open your terminal and clone down your unique forked copy to your
-                        local machine using the command below:</p>
-                    <div class="relative group">
-                        <code
-                            class="block bg-black text-emerald-400 text-xs p-2 pr-8 rounded border border-slate-800 font-mono select-all overflow-x-auto whitespace-nowrap">git clone https://github.com/YOUR-USERNAME/repo-name.git</code>
-                        <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                            class="absolute right-2.5 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                            title="Copy to clipboard">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-devCard border border-devBorder p-5 rounded-xl space-y-2 hover:border-devBlue/30 transition">
-                    <div class="text-devBlue font-bold text-sm tracking-wide uppercase">Step 3: Modify Code</div>
-                    <p class="text-sm text-slate-400">Open the folder in VS Code (`code .`). Locate the
-                        <code>hi its divya,,,</code> tag and append your structured profile badge block right
-                        into the list.</p>
-                </div>
-
-                <div
-                    class="bg-devCard border border-devBorder p-5 rounded-xl space-y-2 hover:border-devBlue/30 transition">
-                    <div class="text-devBlue font-bold text-sm tracking-wide uppercase">Step 4: Commit & PR</div>
-                    <p class="text-sm text-slate-400">Stage your changes, commit them locally, and push them back out up
-                        to your remote profile. Finally, initiate a live <strong>Pull Request</strong> back to us!</p>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div
+            class="bg-devCard border border-devBorder p-5 rounded-xl space-y-2 hover:border-devBlue/30 transition"
+          >
+            <div class="text-devBlue font-bold text-sm tracking-wide uppercase">
+              Step 1: Fork & Star
             </div>
-        </div>
-
-        <div id="sandbox" class="lg:col-span-1 space-y-4">
-            <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-users text-devGreen"></i> Playground
-            </h2>
-            <p class="text-xs text-slate-400 leading-normal">
-                Open the .html file, edit the syntax profile badge below, and push it to your fork.
+            <p class="text-sm text-slate-400">
+              Click the <strong>Star</strong> button on our repository to
+              support us, then click <strong>Fork</strong> to generate a
+              separate copy of this project directly on your GitHub profile.
             </p>
+          </div>
 
-            <div
-                class="bg-devCard border border-devBorder rounded-xl p-4 space-y-3 max-h-[420px] min-h-[300px] overflow-y-scroll pr-2">
-                <div
-                    class="bg-slate-900/60 border border-devBorder p-3 rounded-lg flex items-center justify-between hover:border-slate-700 transition">
-                    <div>
-                        <h4 class="font-medium text-white text-sm">Anshu Bhandari</h4>
-                        <span class="text-xs text-slate-500 font-mono">Roll: 33 (CE-2nd-2025)</span>
-                    </div>
-                    <span
-                        class="text-xs bg-devGreen/10 text-devGreen border border-devGreen/20 px-2 py-0.5 rounded font-medium">KUCC
-                        Exec</span>
-                </div>
-
-                <div
-                    class="bg-slate-900/60 border border-devBorder p-3 rounded-lg flex items-center justify-between hover:border-slate-700 transition">
-                    <div>
-                        <h4 class="font-medium text-white text-sm">Pratish Chaudhary</h4> <!-- EDIT ME -->
-                        <span class="text-xs text-slate-500 font-mono">Roll: 49 (CE-1st Yr)</span> <!-- EDIT ME -->
-                    </div>
-                    <span
-                        class="text-xs bg-devBlue/10 text-devBlue border border-devBlue/20 px-2 py-0.5 rounded font-medium">Contributor</span>
-                </div>
-
+          <div
+            class="bg-devCard border border-devBorder p-5 rounded-xl space-y-2 hover:border-devBlue/30 transition"
+          >
+            <div class="text-devBlue font-bold text-sm tracking-wide uppercase">
+              Step 2: Local Clone
             </div>
+            <p class="text-sm text-slate-400">
+              Open your terminal and clone down your unique forked copy to your
+              local machine using the command below:
+            </p>
+            <div class="relative group">
+              <code
+                class="block bg-black text-emerald-400 text-xs p-2 pr-8 rounded border border-slate-800 font-mono select-all overflow-x-auto whitespace-nowrap"
+                >git clone https://github.com/YOUR-USERNAME/repo-name.git</code
+              >
+              <button
+                onclick="
+                  copyToClipboard(this.previousElementSibling.innerText, this)
+                "
+                class="absolute right-2.5 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                title="Copy to clipboard"
+              >
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="bg-devCard border border-devBorder p-5 rounded-xl space-y-2 hover:border-devBlue/30 transition"
+          >
+            <div class="text-devBlue font-bold text-sm tracking-wide uppercase">
+              Step 3: Modify Code
+            </div>
+            <p class="text-sm text-slate-400">
+              Open the folder in VS Code (`code .`). Locate the
+              <code>hi its divya,,,</code> tag and append your structured
+              profile badge block right into the list.
+            </p>
+          </div>
+
+          <div
+            class="bg-devCard border border-devBorder p-5 rounded-xl space-y-2 hover:border-devBlue/30 transition"
+          >
+            <div class="text-devBlue font-bold text-sm tracking-wide uppercase">
+              Step 4: Commit & PR
+            </div>
+            <p class="text-sm text-slate-400">
+              Stage your changes, commit them locally, and push them back out up
+              to your remote profile. Finally, initiate a live
+              <strong>Pull Request</strong> back to us!
+            </p>
+          </div>
         </div>
+      </div>
+
+      <div id="sandbox" class="lg:col-span-1 space-y-4">
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-users text-devGreen"></i> Playground
+        </h2>
+        <p class="text-xs text-slate-400 leading-normal">
+          Open the .html file, edit the syntax profile badge below, and push it
+          to your fork.
+        </p>
+
+        <div
+          class="bg-devCard border border-devBorder rounded-xl p-4 space-y-3 max-h-[420px] min-h-[300px] overflow-y-scroll pr-2"
+        >
+          <div
+            class="bg-slate-900/60 border border-devBorder p-3 rounded-lg flex items-center justify-between hover:border-slate-700 transition"
+          >
+            <div>
+              <h4 class="font-medium text-white text-sm">Anshu Bhandari</h4>
+              <span class="text-xs text-slate-500 font-mono"
+                >Roll: 33 (CE-2nd-2025)</span
+              >
+            </div>
+            <span
+              class="text-xs bg-devGreen/10 text-devGreen border border-devGreen/20 px-2 py-0.5 rounded font-medium"
+              >KUCC Exec</span
+            >
+          </div>
+
+          <div
+            class="bg-slate-900/60 border border-devBorder p-3 rounded-lg flex items-center justify-between hover:border-slate-700 transition"
+          >
+            <div>
+              <h4 class="font-medium text-white text-sm">Rahul Shrestha</h4>
+              <!-- EDIT ME -->
+              <span class="text-xs text-slate-500 font-mono"
+                >Roll: 20 (CE-1st Yr)</span
+              >
+              <!-- EDIT ME -->
+            </div>
+            <span
+              class="text-xs bg-devBlue/10 text-devBlue border border-devBlue/20 px-2 py-0.5 rounded font-medium"
+              >Contributor</span
+            >
+          </div>
+        </div>
+      </div>
     </main>
 
-    <section id="command-library"
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-devBorder space-y-8">
-        <div>
-            <h2 class="text-3xl font-extrabold text-white tracking-tight">
-                <i class="fa-solid fa-book-bookmark text-devOrange mr-2"></i> Real-World Git Command Library
-            </h2>
-            <p class="text-slate-400 mt-2 text-sm">Categorized reference manual for everyday local and cloud development
-                workflows.</p>
+    <section
+      id="command-library"
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-devBorder space-y-8"
+    >
+      <div>
+        <h2 class="text-3xl font-extrabold text-white tracking-tight">
+          <i class="fa-solid fa-book-bookmark text-devOrange mr-2"></i>
+          Real-World Git Command Library
+        </h2>
+        <p class="text-slate-400 mt-2 text-sm">
+          Categorized reference manual for everyday local and cloud development
+          workflows.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-devBlue/30 transition"
+        >
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2 text-white font-bold">
+              <i class="fa-solid fa-sliders text-devBlue"></i>
+              <span>1. Configuration & Setup</span>
+            </div>
+            <p class="text-xs text-slate-400">
+              Commands to set up your identity, start local repositories, and
+              connect to remote servers like GitHub.
+            </p>
+
+            <div class="space-y-3 pt-2">
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git config --global user.name "Your Name"</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Sets your name globally for all future commit
+                  snapshots.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git config --global user.email "you@example.com"</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Configures your email address associated with your Git
+                  commits.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git init</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Initializes a brand-new, empty Git repository in the current
+                  directory.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git clone &lt;repo-url&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Clones an existing remote repository onto your local
+                  system.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git remote add origin &lt;repo-url&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Links your local workspace to a newly created remote URL
+                  destination.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git remote set-url origin &lt;repo-url&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Changes/updates the URL destination of an existing remote
+                  target.</span
+                >
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            <div
-                class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-devBlue/30 transition">
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-2 text-white font-bold">
-                        <i class="fa-solid fa-sliders text-devBlue"></i>
-                        <span>1. Configuration & Setup</span>
-                    </div>
-                    <p class="text-xs text-slate-400">Commands to set up your identity, start local repositories, and
-                        connect to remote servers like GitHub.</p>
-
-                    <div class="space-y-3 pt-2">
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git config --global user.name "Your Name"</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Sets your name globally for all future
-                                commit snapshots.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git config --global user.email "you@example.com"</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Configures your email address associated
-                                with your Git commits.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git init</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Initializes a brand-new, empty Git
-                                repository in the current directory.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git clone &lt;repo-url&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Clones an existing remote repository
-                                onto your local system.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git remote add origin &lt;repo-url&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Links your local workspace to a newly
-                                created remote URL destination.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git remote set-url origin &lt;repo-url&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Changes/updates the URL destination of
-                                an existing remote target.</span>
-                        </div>
-                    </div>
-                </div>
+        <div
+          class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-devGreen/30 transition"
+        >
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2 text-white font-bold">
+              <i class="fa-solid fa-rotate text-devGreen"></i>
+              <span>2. The Daily Code Pipeline</span>
             </div>
+            <p class="text-xs text-slate-400">
+              The essential everyday workflow cycle to stage, inspect, commit,
+              and share updates.
+            </p>
 
-            <div
-                class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-devGreen/30 transition">
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-2 text-white font-bold">
-                        <i class="fa-solid fa-rotate text-devGreen"></i>
-                        <span>2. The Daily Code Pipeline</span>
-                    </div>
-                    <p class="text-xs text-slate-400">The essential everyday workflow cycle to stage, inspect, commit,
-                        and share updates.</p>
-
-                    <div class="space-y-3 pt-2">
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git status</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Checks which files are modified,
-                                untracked, or staged.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git add &lt;file-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Stages a specific file ready to be
-                                committed next.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git add .</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Stages *all* modified, deleted, and new
-                                files in the repo.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git commit -m "feat: core tracking"</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Saves your staged modifications as a
-                                historical checkpoint.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git push -u origin &lt;branch-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Uploads local commits to a remote
-                                branch, setting upstream flags.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git pull</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Fetches remote adjustments and merges
-                                them automatically into your workspace.</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="space-y-3 pt-2">
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git status</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Checks which files are modified, untracked, or staged.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git add &lt;file-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Stages a specific file ready to be committed next.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git add .</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Stages *all* modified, deleted, and new files in the
+                  repo.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git commit -m "feat: core tracking"</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Saves your staged modifications as a historical
+                  checkpoint.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git push -u origin &lt;branch-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Uploads local commits to a remote branch, setting upstream
+                  flags.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devGreen p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git pull</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Fetches remote adjustments and merges them automatically into
+                  your workspace.</span
+                >
+              </div>
             </div>
-
-            <div
-                class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-purple-400/30 transition">
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-2 text-white font-bold">
-                        <i class="fa-solid fa-code-branch text-purple-400"></i>
-                        <span>3. Branch Management</span>
-                    </div>
-                    <p class="text-xs text-slate-400">Essential for production-level development to securely isolate
-                        feature releases and merges.</p>
-
-                    <div class="space-y-3 pt-2">
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git checkout -b &lt;branch-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Creates a new feature branch and jumps
-                                directly into it.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git checkout &lt;branch-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Switches between active branches in the
-                                repository workspace.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git switch &lt;branch-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Modern, safer alternative to switch
-                                branches cleanly.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git branch -a</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Lists all local and remote branches
-                                tracked in your repository.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git merge &lt;branch-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Integrates history from target branch
-                                into the active branch.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git branch -d &lt;branch-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Safely deletes a local branch that is
-                                already merged into primary history.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div
-                class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-devOrange/30 transition">
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-2 text-white font-bold">
-                        <i class="fa-solid fa-box-archive text-devOrange"></i>
-                        <span>4. The Git Stash (Save State)</span>
-                    </div>
-                    <p class="text-xs text-slate-400">Temporarily save local progress without committing, letting you
-                        switch context in a clean working tree.</p>
-
-                    <div class="space-y-3 pt-2">
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devOrange p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git stash</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Temporarily shelves all current
-                                uncommitted adjustments to a clean slate.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devOrange p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git stash list</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Lists your historically stored stashes
-                                in descending order.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devOrange p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git stash pop</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Pulls the latest stashed files back into
-                                the working directory and clears the stash entry.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devOrange p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git stash apply</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Applies stashed modifications back into
-                                workspace but retains it inside the stash store.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div
-                class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-teal-400/30 transition">
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-2 text-white font-bold">
-                        <i class="fa-solid fa-eye text-teal-400"></i>
-                        <span>5. Inspecting Project History</span>
-                    </div>
-                    <p class="text-xs text-slate-400">Browse commits, identify changes, track codebase authorship, and
-                        diagnose system changes.</p>
-
-                    <div class="space-y-3 pt-2">
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-teal-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git log --oneline --graph --all</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Displays a beautiful, scannable ASCII
-                                tree layout of all history.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-teal-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git diff</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Shows unstaged changes between your
-                                current files and the last commit.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-teal-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git diff --staged</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Highlights diffs between staged
-                                modifications and your last commit.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-teal-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git blame &lt;file-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Shows authors and commit stamps for
-                                every single line inside a file.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div
-                class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-devRed/30 transition">
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-2 text-white font-bold">
-                        <i class="fa-solid fa-triangle-exclamation text-devRed"></i>
-                        <span>6. The Panic Buttons (Undo)</span>
-                    </div>
-                    <p class="text-xs text-slate-400">Mistakes happen. These commands let you safely discard, revert, or
-                        overwrite faulty commits and states.</p>
-
-                    <div class="space-y-3 pt-2">
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git checkout -- &lt;file-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Discards local uncommitted updates in a
-                                target file to match the last commit.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git restore &lt;file-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Modern, safer standard to revert
-                                uncommitted local modifications.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git reset HEAD &lt;file-name&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Removes a specific file from staging
-                                area, retaining physical contents.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git commit --amend -m "new message"</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Overwrites the latest commit description
-                                message or appends staged changes.</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git reset --hard HEAD~1</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Nukes the absolute latest local commit
-                                completely out of existence. Use with caution!</span>
-                        </div>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">git revert &lt;commit-hash&gt;</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <span class="text-[10px] text-slate-500 block mt-1">Creates a new commit reversing all
-                                changes made in specified historical commit.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+          </div>
         </div>
+
+        <div
+          class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-purple-400/30 transition"
+        >
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2 text-white font-bold">
+              <i class="fa-solid fa-code-branch text-purple-400"></i>
+              <span>3. Branch Management</span>
+            </div>
+            <p class="text-xs text-slate-400">
+              Essential for production-level development to securely isolate
+              feature releases and merges.
+            </p>
+
+            <div class="space-y-3 pt-2">
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git checkout -b &lt;branch-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Creates a new feature branch and jumps directly into
+                  it.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git checkout &lt;branch-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Switches between active branches in the repository
+                  workspace.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git switch &lt;branch-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Modern, safer alternative to switch branches cleanly.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git branch -a</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Lists all local and remote branches tracked in your
+                  repository.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git merge &lt;branch-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Integrates history from target branch into the active
+                  branch.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-purple-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git branch -d &lt;branch-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Safely deletes a local branch that is already merged into
+                  primary history.</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-devOrange/30 transition"
+        >
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2 text-white font-bold">
+              <i class="fa-solid fa-box-archive text-devOrange"></i>
+              <span>4. The Git Stash (Save State)</span>
+            </div>
+            <p class="text-xs text-slate-400">
+              Temporarily save local progress without committing, letting you
+              switch context in a clean working tree.
+            </p>
+
+            <div class="space-y-3 pt-2">
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devOrange p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git stash</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Temporarily shelves all current uncommitted adjustments to a
+                  clean slate.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devOrange p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git stash list</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Lists your historically stored stashes in descending
+                  order.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devOrange p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git stash pop</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Pulls the latest stashed files back into the working
+                  directory and clears the stash entry.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devOrange p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git stash apply</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Applies stashed modifications back into workspace but retains
+                  it inside the stash store.</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-teal-400/30 transition"
+        >
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2 text-white font-bold">
+              <i class="fa-solid fa-eye text-teal-400"></i>
+              <span>5. Inspecting Project History</span>
+            </div>
+            <p class="text-xs text-slate-400">
+              Browse commits, identify changes, track codebase authorship, and
+              diagnose system changes.
+            </p>
+
+            <div class="space-y-3 pt-2">
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-teal-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git log --oneline --graph --all</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Displays a beautiful, scannable ASCII tree layout of all
+                  history.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-teal-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git diff</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Shows unstaged changes between your current files and the
+                  last commit.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-teal-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git diff --staged</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Highlights diffs between staged modifications and your last
+                  commit.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-teal-400 p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git blame &lt;file-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Shows authors and commit stamps for every single line inside
+                  a file.</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-devCard border border-devBorder rounded-xl p-6 space-y-4 flex flex-col justify-between hover:border-devRed/30 transition"
+        >
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2 text-white font-bold">
+              <i class="fa-solid fa-triangle-exclamation text-devRed"></i>
+              <span>6. The Panic Buttons (Undo)</span>
+            </div>
+            <p class="text-xs text-slate-400">
+              Mistakes happen. These commands let you safely discard, revert, or
+              overwrite faulty commits and states.
+            </p>
+
+            <div class="space-y-3 pt-2">
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git checkout -- &lt;file-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Discards local uncommitted updates in a target file to match
+                  the last commit.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git restore &lt;file-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Modern, safer standard to revert uncommitted local
+                  modifications.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git reset HEAD &lt;file-name&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Removes a specific file from staging area, retaining physical
+                  contents.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git commit --amend -m "new message"</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Overwrites the latest commit description message or appends
+                  staged changes.</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git reset --hard HEAD~1</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Nukes the absolute latest local commit completely out of
+                  existence. Use with caution!</span
+                >
+              </div>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devRed p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >git revert &lt;commit-hash&gt;</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <span class="text-[10px] text-slate-500 block mt-1"
+                  >Creates a new commit reversing all changes made in specified
+                  historical commit.</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="github-connection"
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-devBorder space-y-8">
-        <div>
-            <h2 class="text-3xl font-extrabold text-white tracking-tight">
-                <i class="fa-brands fa-github text-devBlue mr-2"></i> Connecting Your GitHub Account
-            </h2>
-            <p class="text-slate-400 mt-2 text-sm">Essential initial setup steps to securely authenticate your local Git
-                commands with GitHub.</p>
+    <section
+      id="github-connection"
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-devBorder space-y-8"
+    >
+      <div>
+        <h2 class="text-3xl font-extrabold text-white tracking-tight">
+          <i class="fa-brands fa-github text-devBlue mr-2"></i> Connecting Your
+          GitHub Account
+        </h2>
+        <p class="text-slate-400 mt-2 text-sm">
+          Essential initial setup steps to securely authenticate your local Git
+          commands with GitHub.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- SSH Authentication (Recommended) -->
+        <div
+          class="bg-devCard border border-devBorder rounded-xl p-6 space-y-5 hover:border-devBlue/30 transition"
+        >
+          <div class="flex items-center space-x-3">
+            <span
+              class="bg-devBlue/10 text-devBlue font-bold text-xs px-2.5 py-1 rounded-md border border-devBlue/20"
+              >METHOD A</span
+            >
+            <h3 class="text-lg font-bold text-white">
+              SSH Key Authentication (Highly Recommended)
+            </h3>
+          </div>
+          <p class="text-xs text-slate-400">
+            Secure, password-less authentication using public/private keypairs.
+            Excellent for long-term coding.
+          </p>
+
+          <ol class="space-y-4 text-xs text-slate-300">
+            <li class="space-y-1.5">
+              <span class="font-bold text-white"
+                >1. Generate a new SSH Keypair:</span
+              >
+              <p class="text-slate-400">
+                Open your terminal and execute the command below (press Enter to
+                accept default storage paths):
+              </p>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >ssh-keygen -t ed25519 -C "your.email@example.com"</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2.5 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+            </li>
+            <li class="space-y-1.5">
+              <span class="font-bold text-white"
+                >2. Copy your public SSH Key:</span
+              >
+              <p class="text-slate-400">
+                Read and copy the generated public key text block to your
+                clipboard:
+              </p>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >cat ~/.ssh/id_ed25519.pub</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2.5 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+            </li>
+            <li class="space-y-1.5">
+              <span class="font-bold text-white"
+                >3. Add the Key to GitHub:</span
+              >
+              <p class="text-slate-400">
+                Go to GitHub.com → click your Profile Photo →
+                <strong class="text-white">Settings</strong> →
+                <strong class="text-white">SSH and GPG keys</strong> → click
+                <strong class="text-white">New SSH Key</strong> → paste the
+                copied block and save.
+              </p>
+            </li>
+            <li class="space-y-1.5">
+              <span class="font-bold text-white"
+                >4. Verify the SSH Connection:</span
+              >
+              <p class="text-slate-400">
+                Run this to test the handshake (type
+                <strong class="text-white">yes</strong> if prompted):
+              </p>
+              <div class="relative group">
+                <code
+                  class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900"
+                  >ssh -T git@github.com</code
+                >
+                <button
+                  onclick="
+                    copyToClipboard(this.previousElementSibling.innerText, this)
+                  "
+                  class="absolute right-2.5 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title="Copy to clipboard"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+            </li>
+          </ol>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- SSH Authentication (Recommended) -->
-            <div class="bg-devCard border border-devBorder rounded-xl p-6 space-y-5 hover:border-devBlue/30 transition">
-                <div class="flex items-center space-x-3">
-                    <span
-                        class="bg-devBlue/10 text-devBlue font-bold text-xs px-2.5 py-1 rounded-md border border-devBlue/20">METHOD
-                        A</span>
-                    <h3 class="text-lg font-bold text-white">SSH Key Authentication (Highly Recommended)</h3>
-                </div>
-                <p class="text-xs text-slate-400">Secure, password-less authentication using public/private keypairs.
-                    Excellent for long-term coding.</p>
+        <!-- HTTPS with Personal Access Token (PAT) -->
+        <div
+          class="bg-devCard border border-devBorder rounded-xl p-6 space-y-5 hover:border-devOrange/30 transition"
+        >
+          <div class="flex items-center space-x-3">
+            <span
+              class="bg-devOrange/10 text-devOrange font-bold text-xs px-2.5 py-1 rounded-md border border-devOrange/20"
+              >METHOD B</span
+            >
+            <h3 class="text-lg font-bold text-white">
+              HTTPS with Personal Access Token (PAT)
+            </h3>
+          </div>
+          <p class="text-xs text-slate-400">
+            Authenticate requests via secure API tokens. Perfect if you prefer
+            standard HTTPS URLs.
+          </p>
 
-                <ol class="space-y-4 text-xs text-slate-300">
-                    <li class="space-y-1.5">
-                        <span class="font-bold text-white">1. Generate a new SSH Keypair:</span>
-                        <p class="text-slate-400">Open your terminal and execute the command below (press Enter to
-                            accept default storage paths):</p>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">ssh-keygen -t ed25519 -C "your.email@example.com"</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2.5 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                        </div>
-                    </li>
-                    <li class="space-y-1.5">
-                        <span class="font-bold text-white">2. Copy your public SSH Key:</span>
-                        <p class="text-slate-400">Read and copy the generated public key text block to your clipboard:
-                        </p>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">cat ~/.ssh/id_ed25519.pub</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2.5 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                        </div>
-                    </li>
-                    <li class="space-y-1.5">
-                        <span class="font-bold text-white">3. Add the Key to GitHub:</span>
-                        <p class="text-slate-400">Go to GitHub.com → click your Profile Photo → <strong
-                                class="text-white">Settings</strong> → <strong class="text-white">SSH and GPG
-                                keys</strong> → click <strong class="text-white">New SSH Key</strong> → paste the copied
-                            block and save.</p>
-                    </li>
-                    <li class="space-y-1.5">
-                        <span class="font-bold text-white">4. Verify the SSH Connection:</span>
-                        <p class="text-slate-400">Run this to test the handshake (type <strong
-                                class="text-white">yes</strong> if prompted):</p>
-                        <div class="relative group">
-                            <code
-                                class="bg-black text-[11px] text-devBlue p-2 pr-8 rounded block font-mono select-all overflow-x-auto whitespace-nowrap border border-slate-900">ssh -T git@github.com</code>
-                            <button onclick="copyToClipboard(this.previousElementSibling.innerText, this)"
-                                class="absolute right-2.5 top-2 text-slate-500 hover:text-white transition opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="Copy to clipboard">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-
-            <!-- HTTPS with Personal Access Token (PAT) -->
-            <div
-                class="bg-devCard border border-devBorder rounded-xl p-6 space-y-5 hover:border-devOrange/30 transition">
-                <div class="flex items-center space-x-3">
-                    <span
-                        class="bg-devOrange/10 text-devOrange font-bold text-xs px-2.5 py-1 rounded-md border border-devOrange/20">METHOD
-                        B</span>
-                    <h3 class="text-lg font-bold text-white">HTTPS with Personal Access Token (PAT)</h3>
-                </div>
-                <p class="text-xs text-slate-400">Authenticate requests via secure API tokens. Perfect if you prefer
-                    standard HTTPS URLs.</p>
-
-                <ol class="space-y-4 text-xs text-slate-300">
-                    <li class="space-y-1">
-                        <span class="font-bold text-white">1. Generate your Token on GitHub:</span>
-                        <p class="text-slate-400">Go to GitHub.com → <strong class="text-white">Settings</strong> →
-                            <strong class="text-white">Developer Settings</strong> → <strong class="text-white">Personal
-                                Access Tokens</strong> → <strong class="text-white">Tokens (classic)</strong>.</p>
-                    </li>
-                    <li class="space-y-1">
-                        <span class="font-bold text-white">2. Set Permissions & Scope:</span>
-                        <p class="text-slate-400">Click <strong class="text-white">Generate new token
-                                (classic)</strong>, set a description, choose an expiration date, check the box for
-                            <strong class="text-white">repo</strong> access, and generate.</p>
-                    </li>
-                    <li class="space-y-1">
-                        <span class="font-bold text-white">3. Copy & Secure Token:</span>
-                        <p class="text-slate-400">Copy the token immediately. <span
-                                class="text-devOrange font-medium">Warning: GitHub will not show it again!</span> Save
-                            it somewhere safe.</p>
-                    </li>
-                    <li class="space-y-1.5">
-                        <span class="font-bold text-white">4. Authenticate in Terminal:</span>
-                        <p class="text-slate-400">The next time you execute a command (like `git push`) and Git prompts
-                            you for your GitHub Password, <strong class="text-white">paste this Token</strong> instead
-                            of your normal account password.</p>
-                    </li>
-                </ol>
-            </div>
+          <ol class="space-y-4 text-xs text-slate-300">
+            <li class="space-y-1">
+              <span class="font-bold text-white"
+                >1. Generate your Token on GitHub:</span
+              >
+              <p class="text-slate-400">
+                Go to GitHub.com →
+                <strong class="text-white">Settings</strong> →
+                <strong class="text-white">Developer Settings</strong> →
+                <strong class="text-white">Personal Access Tokens</strong> →
+                <strong class="text-white">Tokens (classic)</strong>.
+              </p>
+            </li>
+            <li class="space-y-1">
+              <span class="font-bold text-white"
+                >2. Set Permissions & Scope:</span
+              >
+              <p class="text-slate-400">
+                Click
+                <strong class="text-white">Generate new token (classic)</strong
+                >, set a description, choose an expiration date, check the box
+                for <strong class="text-white">repo</strong> access, and
+                generate.
+              </p>
+            </li>
+            <li class="space-y-1">
+              <span class="font-bold text-white">3. Copy & Secure Token:</span>
+              <p class="text-slate-400">
+                Copy the token immediately.
+                <span class="text-devOrange font-medium"
+                  >Warning: GitHub will not show it again!</span
+                >
+                Save it somewhere safe.
+              </p>
+            </li>
+            <li class="space-y-1.5">
+              <span class="font-bold text-white"
+                >4. Authenticate in Terminal:</span
+              >
+              <p class="text-slate-400">
+                The next time you execute a command (like `git push`) and Git
+                prompts you for your GitHub Password,
+                <strong class="text-white">paste this Token</strong> instead of
+                your normal account password.
+              </p>
+            </li>
+          </ol>
         </div>
+      </div>
     </section>
 
     <footer
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-devBorder text-center text-xs text-slate-500 space-y-2">
-        <p>Kathmandu University Computer Club (KUCC) — Department of Computer Science and Engineering.</p>
-        <p class="font-mono text-[11px]">$ git log -1 --format="%h - %an, %ar : %s"</p>
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-devBorder text-center text-xs text-slate-500 space-y-2"
+    >
+      <p>
+        Kathmandu University Computer Club (KUCC) — Department of Computer
+        Science and Engineering.
+      </p>
+      <p class="font-mono text-[11px]">
+        $ git log -1 --format="%h - %an, %ar : %s"
+      </p>
     </footer>
-
-</body>
-
+  </body>
 </html>
